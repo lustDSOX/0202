@@ -1,0 +1,8 @@
+C:\Users\K12\source\repos\0202\0202\bin\Debug\0202.exe.config
+C:\Users\K12\source\repos\0202\0202\bin\Debug\0202.exe
+C:\Users\K12\source\repos\0202\0202\bin\Debug\0202.pdb
+C:\Users\K12\source\repos\0202\0202\obj\Debug\0202.csproj.AssemblyReference.cache
+C:\Users\K12\source\repos\0202\0202\obj\Debug\0202.csproj.ResolveComReference.cache
+C:\Users\K12\source\repos\0202\0202\obj\Debug\0202.csproj.CoreCompileInputs.cache
+C:\Users\K12\source\repos\0202\0202\obj\Debug\0202.exe
+C:\Users\K12\source\repos\0202\0202\obj\Debug\0202.pdb
