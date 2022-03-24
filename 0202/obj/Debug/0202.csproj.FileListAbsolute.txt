@@ -6,3 +6,12 @@ C:\Users\K12\source\repos\0202\0202\obj\Debug\0202.csproj.ResolveComReference.ca
 C:\Users\K12\source\repos\0202\0202\obj\Debug\0202.csproj.CoreCompileInputs.cache
 C:\Users\K12\source\repos\0202\0202\obj\Debug\0202.exe
 C:\Users\K12\source\repos\0202\0202\obj\Debug\0202.pdb
+C:\Users\ермолаевас\Source\Repos\0202\0202\bin\Debug\0202.exe.config
+C:\Users\ермолаевас\Source\Repos\0202\0202\bin\Debug\0202.exe
+C:\Users\ермолаевас\Source\Repos\0202\0202\bin\Debug\0202.pdb
+C:\Users\ермолаевас\Source\Repos\0202\0202\obj\Debug\0202.csproj.AssemblyReference.cache
+C:\Users\ермолаевас\Source\Repos\0202\0202\obj\Debug\0202.csproj.SuggestedBindingRedirects.cache
+C:\Users\ермолаевас\Source\Repos\0202\0202\obj\Debug\0202.csproj.ResolveComReference.cache
+C:\Users\ермолаевас\Source\Repos\0202\0202\obj\Debug\0202.csproj.CoreCompileInputs.cache
+C:\Users\ермолаевас\Source\Repos\0202\0202\obj\Debug\0202.exe
+C:\Users\ермолаевас\Source\Repos\0202\0202\obj\Debug\0202.pdb

@@ -5,19 +5,26 @@ using System.Text;
 using System.Threading.Tasks;
 using Excel = Microsoft.Office.Interop.Excel;
 using static System.Console;
+using System.Diagnostics;
+using System.IO;
+
 
 namespace _0202
 {
     class Program
     {
 
+
         static void Main(string[] args)
         {
+            
+            TextWriterTraceListener log = new TextWriterTraceListener(System.IO.File.CreateText(@"data\logi.txt"));
+            Debug.Listeners.Add(log);
             var path = System.IO.Path.GetFullPath(@"data\data_appl.xlsx");
             Excel.Application data_applicants = new Excel.Application(); //открыть эксель
             Excel.Workbook WorkBook = data_applicants.Workbooks.Open(path, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing); //открыть файл
             Excel.Worksheet ObjWorkSheet = (Excel.Worksheet)data_applicants.Sheets[1]; //получить 1 лист
-            data_applicants.Visible = true;
+            data_applicants.Visible = false;
             data_applicants.DisplayAlerts = false;
             Excel.Worksheet sheet = (Excel.Worksheet)WorkBook.Sheets[1];
             string[] titleName = new string[] { "Фамилия:","Имя:","Отчество:", "Дата рождения:" , "Гражданство:", "Пол:", "Домашний адрес:", "Специальность:", "Телефон:", "Законченное образовательное учреждение:", "Год окончания:" , "Данные о родителях:" , "Доп.сведения:", "Изучаемый ин.язык:" ,"Средний балл аттестата:"};
@@ -31,6 +38,8 @@ namespace _0202
                 switch (ReadLine())
                 {
                     case "1":
+                        Trace.WriteLine($"{DateTime.Now}: Пользователь посетил справочник");
+                        
                         exit_spr = false;
                         while(exit_spr == false)
                         {
@@ -40,6 +49,8 @@ namespace _0202
                             switch (ReadLine())
                             {
                                 case "1":
+                                    Trace.WriteLine($"{DateTime.Now}: Пользователь открыл форму создания новой записи");
+                                    
                                     Clear();
                                     string ValueCell = "1";
                                     int i = 0;
@@ -48,16 +59,21 @@ namespace _0202
                                         i++;
                                         ValueCell = sheet.Cells[i, 1].Text;
                                     }
-                                    for (int col = 1; col <= titleName.Length + 1; col++)
+                                    for (int col = 1; col < titleName.Length + 1; col++)
                                     {
+                                        
                                         Write(titleName[col - 1]); sheet.Cells[i, col] = String.Format(ReadLine());
                                     }
                                     Console.ForegroundColor = ConsoleColor.Yellow;
+                                    Trace.WriteLine("Пользователь создал новую запись");
+                                    
                                     WriteLine("Запись успешно создана. Нажмите любую клавишу чтобы продолжить");
                                     Console.ResetColor();
                                     ReadKey();
                                     break;
                                 case "2":
+                                    Trace.WriteLine($"{DateTime.Now}: Пользователь открыл форму просмотра записи");
+                                    
                                     Clear();
                                     i = 1;
                                     ValueCell = "1";
@@ -113,6 +129,8 @@ namespace _0202
                                     }
                                     break;
                                 case "3":
+                                    Trace.WriteLine($"{DateTime.Now}: Пользователь открыл форму поиска записей");
+                                    
                                     Clear();
                                     ValueCell = "1";
                                     i = 2;
@@ -174,6 +192,8 @@ namespace _0202
 
                         break;
                     case "2":
+                        Trace.WriteLine($"{DateTime.Now}: Пользователь открыл форму просмотра отчетов");
+                        
                         bool back = false;
                         while (back == false)
                         {
@@ -183,18 +203,21 @@ namespace _0202
                             switch (ReadLine())
                             {
                                 case "1":
+                                    Trace.WriteLine($"{DateTime.Now}: Пользователь открыл форму отчета по специальностям");
+                                    
                                     Clear();
                                     Console.ForegroundColor = ConsoleColor.Yellow;
                                     WriteLine("Отчет \"Статистика по специальнотсям\"");
                                     Console.ResetColor();
-                                    int count = 0;
                                     string ValuesCell = "1";
-                                    Microsoft.Office.Interop.Excel.Range rangeKey = ObjWorkSheet.get_Range("B" + (i - 1));
+
                                     while (ValuesCell != "")
                                     {
                                     }
                                     break;
                                 case "2":
+                                    Trace.WriteLine($"{DateTime.Now}: Пользователь открыл форму отчета по изучаемому языку");
+                                    
                                     break;
                                 case "0":
                                     back = true;
@@ -212,8 +235,11 @@ namespace _0202
                         break;
                     case "3":
                         exit = true;
+                        Trace.WriteLine($"{DateTime.Now}: Пользователь вышел из программы");
+                        
                         break;
                     default:
+                        Debug.Assert(false);
                         Console.ForegroundColor = ConsoleColor.Yellow;
                         WriteLine("Введены некоректные данные. Нажмите любую клавишу чтобы продолжить");
                         Console.ResetColor();
@@ -222,11 +248,11 @@ namespace _0202
                 }
 
             }
+            Debug.Flush();
             WorkBook.Close(false, Type.Missing, Type.Missing); //закрыть не сохраняя
             data_applicants.Quit(); // выйти из экселя
             GC.Collect(); // убрать за собой
             Environment.Exit(0);
-
         }
     }
 }
