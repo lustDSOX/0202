@@ -24,7 +24,7 @@ namespace _0202
             Excel.Application data_applicants = new Excel.Application(); //открыть эксель
             Excel.Workbook WorkBook = data_applicants.Workbooks.Open(path, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing); //открыть файл
             Excel.Worksheet ObjWorkSheet = (Excel.Worksheet)data_applicants.Sheets[1]; //получить 1 лист
-            data_applicants.Visible = false;
+            data_applicants.Visible = true;
             data_applicants.DisplayAlerts = false;
             Excel.Worksheet sheet = (Excel.Worksheet)WorkBook.Sheets[1];
             string[] titleName = new string[] { "Фамилия:","Имя:","Отчество:", "Дата рождения:" , "Гражданство:", "Пол:", "Домашний адрес:", "Специальность:", "Телефон:", "Законченное образовательное учреждение:", "Год окончания:" , "Данные о родителях:" , "Доп.сведения:", "Изучаемый ин.язык:" ,"Средний балл аттестата:"};
@@ -119,9 +119,9 @@ namespace _0202
                                                     break;
                                                 default:
                                                     Console.ForegroundColor = ConsoleColor.Yellow;
-                                                    WriteLine("Введены некоректные данные. Нажмите любую клавишу чтобы продолжить");
+                                                    WriteLine("Введены некоректные данные. Нажмите ENTER чтобы продолжить");
                                                     Console.ResetColor();
-                                                    ReadKey();
+                                                    ReadLine();
                                                     break;
                                             }
                                         }
@@ -173,9 +173,9 @@ namespace _0202
                                     }
 
                                     Console.ForegroundColor = ConsoleColor.Yellow;
-                                    WriteLine("Нажмите любую клавишу чтобы продолжить");
+                                    WriteLine("Нажмите ENTER чтобы продолжить");
                                     Console.ResetColor();
-                                    ReadKey();
+                                    ReadLine();
                                     break;
 
                                 case "0":
@@ -183,9 +183,9 @@ namespace _0202
                                     break;
                                 default:
                                     Console.ForegroundColor = ConsoleColor.Yellow;
-                                    WriteLine("Введены некоректные данные. Нажмите любую клавишу чтобы продолжить");
+                                    WriteLine("Введены некоректные данные. Нажмите ENTER чтобы продолжить");
                                     Console.ResetColor();
-                                    ReadKey();
+                                    ReadLine();
                                     break;
                             }
                         }
@@ -204,29 +204,98 @@ namespace _0202
                             {
                                 case "1":
                                     Trace.WriteLine($"{DateTime.Now}: Пользователь открыл форму отчета по специальностям");
-                                    
+                                    int i = 0;
+                                    int col = 2;
+                                    string ValueCell = "1";
                                     Clear();
                                     Console.ForegroundColor = ConsoleColor.Yellow;
                                     WriteLine("Отчет \"Статистика по специальнотсям\"");
                                     Console.ResetColor();
-                                    string ValuesCell = "1";
-
-                                    while (ValuesCell != "")
+                                    while(sheet.Cells[col, 8].text != "")
                                     {
+                                        col++;
+                                        i++;
                                     }
+                                    Excel.Range rangeKey = ObjWorkSheet.get_Range("H2", "H" + i);
+                                    ObjWorkSheet.Sort.SortFields.Add(rangeKey);
+                                    ObjWorkSheet.Sort.SetRange(ObjWorkSheet.Range["H2","H" + i]);
+                                    ObjWorkSheet.Sort.Orientation = Excel.XlSortOrientation.xlSortColumns;
+                                    ObjWorkSheet.Sort.SortMethod = Excel.XlSortMethod.xlPinYin;
+                                    ObjWorkSheet.Sort.Apply();
+
+                                    col = 2;
+                                    i = 1;
+                                    ValueCell = sheet.Cells[col, 8].text;
+                                    while (sheet.Cells[col, 8].text != "")
+                                    {
+                                        if(sheet.Cells[col, 8].text == ValueCell)
+                                        {
+                                            i++;
+                                        }
+                                        else
+                                        {
+                                            WriteLine(ValueCell + " - " + i);
+                                            ValueCell = sheet.Cells[col, 8].text;
+                                            i = 0;
+                                        }
+                                        col++; 
+                                    }
+                                    Console.ForegroundColor = ConsoleColor.Yellow;
+                                    WriteLine("Нажмите ENTER чтобы продолжить");
+                                    Console.ResetColor();
+                                    ReadLine();
                                     break;
                                 case "2":
                                     Trace.WriteLine($"{DateTime.Now}: Пользователь открыл форму отчета по изучаемому языку");
-                                    
+                                    i = 0;
+                                    col = 2;
+                                    ValueCell = "1";
+                                    Clear();
+                                    Console.ForegroundColor = ConsoleColor.Yellow;
+                                    WriteLine("Отчет \"Статистика по изучаемому языку\"");
+                                    Console.ResetColor();
+                                    while (sheet.Cells[col, 8].text != "")
+                                    {
+                                        col++;
+                                        i++;
+                                    }
+                                    rangeKey = ObjWorkSheet.get_Range("N2", "N" + i);
+                                    ObjWorkSheet.Sort.SortFields.Add(rangeKey);
+                                    ObjWorkSheet.Sort.SetRange(ObjWorkSheet.Range["N2", "N" + i]);
+                                    ObjWorkSheet.Sort.Orientation = Excel.XlSortOrientation.xlSortColumns;
+                                    ObjWorkSheet.Sort.SortMethod = Excel.XlSortMethod.xlPinYin;
+                                    ObjWorkSheet.Sort.Apply();
+
+                                    col = 2;
+                                    i = 1;
+                                    ValueCell = sheet.Cells[col, 8].text;
+                                    while (sheet.Cells[col, 8].text != "")
+                                    {
+                                        if (sheet.Cells[col, 8].text == ValueCell)
+                                        {
+                                            i++;
+                                        }
+                                        else
+                                        {
+                                            WriteLine(ValueCell + " - " + i);
+                                            ValueCell = sheet.Cells[col, 8].text;
+                                            i = 0;
+                                        }
+                                        col++;
+                                    }
+                                    Console.ForegroundColor = ConsoleColor.Yellow;
+                                    WriteLine("Нажмите ENTER чтобы продолжить");
+                                    Console.ResetColor();
+                                    ReadLine();
                                     break;
                                 case "0":
                                     back = true;
                                     break;
                                 default:
                                     Console.ForegroundColor = ConsoleColor.Yellow;
-                                    WriteLine("Введены некоректные данные. Нажмите любую клавишу чтобы продолжить");
+                                    WriteLine("Введены некоректные данные. Нажмите ENTER чтобы продолжить");
                                     Console.ResetColor();
-                                    ReadKey();
+                                    ReadLine();
                                     break;
                             }
                         }
@@ -241,9 +310,9 @@ namespace _0202
                     default:
                         Debug.Assert(false);
                         Console.ForegroundColor = ConsoleColor.Yellow;
-                        WriteLine("Введены некоректные данные. Нажмите любую клавишу чтобы продолжить");
+                        WriteLine("Введены некоректные данные. Нажмите ENTER чтобы продолжить");
                         Console.ResetColor();
-                        ReadKey();
+                        ReadLine();
                         break;
                 }
 
