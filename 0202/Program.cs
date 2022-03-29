@@ -45,7 +45,7 @@ namespace _0202
                         {
 
                             Clear();
-                            WriteLine("1 - Новая запись \n2 - Просмотр всех записей \n3 - Поиск \n0 - Назад");
+                            WriteLine("1 - Новая запись \n2 - Просмотр всех записей\n3 - Поиск \n4 - Удаление записи\n0 - Назад");
                             switch (ReadLine())
                             {
                                 case "1":
@@ -66,7 +66,9 @@ namespace _0202
                                     }
                                     Console.ForegroundColor = ConsoleColor.Yellow;
                                     Trace.WriteLine("Пользователь создал новую запись");
-                                    
+                                    data_applicants.Application.ActiveWorkbook.SaveAs(path, Type.Missing,
+                                  Type.Missing, Type.Missing, Type.Missing, Type.Missing, Excel.XlSaveAsAccessMode.xlNoChange,
+                                  Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
                                     WriteLine("Запись успешно создана. Нажмите любую клавишу чтобы продолжить");
                                     Console.ResetColor();
                                     ReadKey();
@@ -134,10 +136,17 @@ namespace _0202
                                     Clear();
                                     ValueCell = "1";
                                     i = 2;
+                                    int check_search = 0;
+                                    int count_search = 0;
+                                    
                                     for (int col = 0; col < titleName.Length; col++)
                                     {
                                         Write(titleName[col]);
                                         search[col] = ReadLine();
+                                    }
+                                    for (int s = 0; s < search.Length; s++)
+                                    {
+                                        if (search[s] != "") count_search++;
                                     }
                                     WriteLine("_____________________________________________________________________");
                                     Console.ForegroundColor = ConsoleColor.Yellow;
@@ -157,19 +166,22 @@ namespace _0202
                                             {
                                                 if (sheet.Cells[i, s + 1].Text == search[s])
                                                 {
-
-                                                    for (int col = 1; col <= titleName.Length; col++)
-                                                    {
-                                                        WriteLine(titleName[col - 1] + sheet.Cells[i, col].Text);
-                                                    }
-                                                    WriteLine("_____________________________________________________________________");
+                                                    check_search++;
                                                 }
                                             }
-
+                                            if (check_search == count_search)
+                                            {
+                                                for (int col = 0; col < titleName.Length; col++)
+                                                {
+                                                    WriteLine(titleName[col] + sheet.Cells[i,col+1].Text);
+                                                }
+                                                check_search = 0;
+                                                WriteLine("_____________________________________________________________________");
+                                            }
 
                                         }
+                                        check_search = 0;
                                         i++;
-
                                     }
 
                                     Console.ForegroundColor = ConsoleColor.Yellow;
@@ -177,9 +189,101 @@ namespace _0202
                                     Console.ResetColor();
                                     ReadLine();
                                     break;
-
                                 case "0":
                                     exit_spr = true;
+                                    break;
+                                case "4":
+                                    Trace.WriteLine($"{DateTime.Now}: Пользователь открыл форму удаления записи");
+
+                                    Clear();
+                                    ValueCell = "1";
+                                    i = 2;
+                                    check_search = 0;
+                                    count_search = 0;
+                                    int i_del = 0;
+                                    for (int col = 0; col < titleName.Length; col++)
+                                    {
+                                        Write(titleName[col]);
+                                        search[col] = ReadLine();
+                                    }
+                                    for (int s = 0; s < search.Length; s++)
+                                    {
+                                        if (search[s] != "") count_search++;
+                                    }
+                                    WriteLine("_____________________________________________________________________");
+                                    Console.ForegroundColor = ConsoleColor.Yellow;
+                                    WriteLine("Запись:");
+                                    Console.ResetColor();
+                                    while (ValueCell != "")
+                                    {
+                                        for (int s = 0; s < search.Length; s++)
+                                        {
+                                            ValueCell = sheet.Cells[i, s + 1].Text;
+                                            if (ValueCell == "")
+                                            {
+                                                break;
+                                            }
+
+                                            if (search[s] != "")
+                                            {
+                                                if (sheet.Cells[i, s + 1].Text == search[s])
+                                                {
+                                                    check_search++;
+                                                }
+                                            }
+                                            if (check_search == count_search)
+                                            {
+                                                for (int col = 0; col < titleName.Length; col++)
+                                                {
+                                                    WriteLine(titleName[col] + sheet.Cells[i, col + 1].Text);
+                                                }
+                                                check_search = 0;
+                                                WriteLine("_____________________________________________________________________");
+                                                Console.ForegroundColor = ConsoleColor.Yellow;
+                                                WriteLine("Удалить эту запись?         [y/n]");
+                                                Console.ResetColor();
+                                                check = false;
+                                                while (check == false)
+                                                {
+                                                    switch (ReadLine())
+                                                    {
+                                                        case "y":
+                                                            for (int col = 0; col < titleName.Length; col++)
+                                                            {
+                                                                sheet.Cells[i, col + 1] = "";
+                                                            }
+                                                            i_del = i;
+                                                            check = true;
+                                                            break;
+                                                        case "n":
+                                                            check = true;
+                                                            break;
+                                                        default:
+                                                            Console.ForegroundColor = ConsoleColor.Yellow;
+                                                            WriteLine("Введены некоректные данные. Нажмите ENTER чтобы продолжить");
+                                                            Console.ResetColor();
+                                                            ReadLine();
+                                                            break;
+                                                    }
+                                                    i++;
+                                                }
+                                                
+                                            }
+
+                                        }
+                                        check_search = 0;
+                                        i++;
+                                    }
+                                    Excel.Range range_moved = ObjWorkSheet.get_Range("A"+(i_del+1), "O"+i);
+                                    Excel.Range range_move = ObjWorkSheet.get_Range("A" + i_del, "O" + (i-1));
+                                    range_moved.Cut(range_move);
+                                    data_applicants.Application.ActiveWorkbook.SaveAs(path, Type.Missing,
+                                  Type.Missing, Type.Missing, Type.Missing, Type.Missing, Excel.XlSaveAsAccessMode.xlNoChange,
+                                  Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                                    Console.ForegroundColor = ConsoleColor.Yellow;
+                                    WriteLine("Запись удалена. Нажмите ENTER чтобы продолжить");
+                                    Console.ResetColor();
+                                    ReadLine();
                                     break;
                                 default:
                                     Console.ForegroundColor = ConsoleColor.Yellow;
