@@ -302,13 +302,13 @@ namespace _0202
                         while (back == false)
                         {
                             Clear();
-                            WriteLine("Выберите отчет: \nСтатистика по специальностям - 1\n Спатистика по изучаемому ин.языку - 2");
+                            WriteLine("Выберите отчет: \n\nСтатистика по специальностям - 1\nСпатистика по изучаемому ин.языку - 2");
                             WriteLine("\n Назад - 0");
                             switch (ReadLine())
                             {
                                 case "1":
                                     Trace.WriteLine($"{DateTime.Now}: Пользователь открыл форму отчета по специальностям");
-                                    int i = 0;
+                                    int i = 1;
                                     int col = 2;
                                     string ValueCell = "1";
                                     Clear();
@@ -321,6 +321,7 @@ namespace _0202
                                         i++;
                                     }
                                     Excel.Range rangeKey = ObjWorkSheet.get_Range("H2", "H" + i);
+                                    ObjWorkSheet.Sort.SortFields.Clear();
                                     ObjWorkSheet.Sort.SortFields.Add(rangeKey);
                                     ObjWorkSheet.Sort.SetRange(ObjWorkSheet.Range["H2","H" + i]);
                                     ObjWorkSheet.Sort.Orientation = Excel.XlSortOrientation.xlSortColumns;
@@ -328,19 +329,21 @@ namespace _0202
                                     ObjWorkSheet.Sort.Apply();
 
                                     col = 2;
-                                    i = 1;
+                                    i = 0;
                                     ValueCell = sheet.Cells[col, 8].text;
                                     while (sheet.Cells[col, 8].text != "")
                                     {
                                         if(sheet.Cells[col, 8].text == ValueCell)
                                         {
                                             i++;
+                                            if (sheet.Cells[col + 1, 8].text == "") WriteLine(ValueCell + " - " + i);
                                         }
                                         else
                                         {
                                             WriteLine(ValueCell + " - " + i);
                                             ValueCell = sheet.Cells[col, 8].text;
-                                            i = 0;
+                                            i = 1;
+                                            if(sheet.Cells[col+1, 8].text == "") WriteLine(ValueCell + " - " + i);
                                         }
                                         col++; 
                                     }
@@ -351,7 +354,7 @@ namespace _0202
                                     break;
                                 case "2":
                                     Trace.WriteLine($"{DateTime.Now}: Пользователь открыл форму отчета по изучаемому языку");
-                                    i = 0;
+                                    i = 1;
                                     col = 2;
                                     ValueCell = "1";
                                     Clear();
@@ -364,6 +367,7 @@ namespace _0202
                                         i++;
                                     }
                                     rangeKey = ObjWorkSheet.get_Range("N2", "N" + i);
+                                    ObjWorkSheet.Sort.SortFields.Clear();
                                     ObjWorkSheet.Sort.SortFields.Add(rangeKey);
                                     ObjWorkSheet.Sort.SetRange(ObjWorkSheet.Range["N2", "N" + i]);
                                     ObjWorkSheet.Sort.Orientation = Excel.XlSortOrientation.xlSortColumns;
@@ -371,19 +375,21 @@ namespace _0202
                                     ObjWorkSheet.Sort.Apply();
 
                                     col = 2;
-                                    i = 1;
-                                    ValueCell = sheet.Cells[col, 8].text;
-                                    while (sheet.Cells[col, 8].text != "")
+                                    i = 0;
+                                    ValueCell = sheet.Cells[col, 14].text;
+                                    while (sheet.Cells[col, 14].text != "")
                                     {
-                                        if (sheet.Cells[col, 8].text == ValueCell)
+                                        if (sheet.Cells[col, 14].text == ValueCell)
                                         {
                                             i++;
+                                            if (sheet.Cells[col + 1, 8].text == "") WriteLine(ValueCell + " - " + i);
                                         }
                                         else
                                         {
                                             WriteLine(ValueCell + " - " + i);
-                                            ValueCell = sheet.Cells[col, 8].text;
-                                            i = 0;
+                                            ValueCell = sheet.Cells[col, 14].text;
+                                            i = 1;
+                                            if (sheet.Cells[col + 1, 8].text == "") WriteLine(ValueCell + " - " + i);
                                         }
                                         col++;
                                     }
